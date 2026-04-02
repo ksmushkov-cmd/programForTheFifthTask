@@ -28,9 +28,5 @@ namespace TextCorrector.Models {
       File.WriteAllText(FilePath, Content);
       LastModified = DateTime.Now;
     }
-
-    public override string ToString() {
-      return $"{FileName} (modified: {LastModified})";
-    }
   }
 }
