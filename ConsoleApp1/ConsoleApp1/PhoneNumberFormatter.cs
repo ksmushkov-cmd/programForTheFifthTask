@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace TextCorrector.Services {
-  /// Mobile phone number formatting service
+
   public class PhoneNumberFormatter {
     private int _lastReplaceCount;
 
@@ -17,12 +18,10 @@ namespace TextCorrector.Services {
       _lastReplaceCount = 0;
     }
 
-    /// Get number of replacements from last operation
     public int GetLastReplaceCount() {
       return _lastReplaceCount;
     }
 
-    /// Format phone numbers in text
     public string FormatPhoneNumbers(string input) {
       if (string.IsNullOrEmpty(input)) {
         _lastReplaceCount = 0;
@@ -33,35 +32,21 @@ namespace TextCorrector.Services {
 
       // Replace all occurrences
       string result = _phoneRegex.Replace(input, match => {
-        _lastReplaceCount++;
-        string code = match.Groups[1].Value;      // 012
-        string firstPart = match.Groups[2].Value;  // 345
-        string secondPart = match.Groups[3].Value; // 67
-        string thirdPart = match.Groups[4].Value;  // 89
+        ++_lastReplaceCount;
+        string operatorCode;      // Operator code (first three digits in brackets)
+        string firstNumberPart;   // The first part of the number after the code
+        string secondNumberPart;  // The second part of the number is for example
+        string thirdNumberPart;   // Part three of the issue
 
-        // Format: +380 12 345 67 89
-         return $"+380 {code.Substring(1)} {firstPart} {secondPart} {thirdPart}";
+        operatorCode = match.Groups[1].Value;      // (012) → "012"
+        firstNumberPart = match.Groups[2].Value;   // 345-67-89 → "345"
+        secondNumberPart = match.Groups[3].Value;  // 345-67-89 → "67"
+        thirdNumberPart = match.Groups[4].Value;   // 345-67-89 → "89"
+        
+        return $"+380 {operatorCode.Substring(1)} {firstNumberPart} {secondNumberPart} {thirdNumberPart}";
       });
 
       return result;
     }
-
-    /// Check if string is a phone number
-    public bool IsPhoneNumber(string input) {
-      return _phoneRegex.IsMatch(input);
-    }
-
-    /// Format a single phone number
-    public string FormatSinglePhoneNumber(string phoneNumber) {
-      Match match = _phoneRegex.Match(phoneNumber);
-      if (match.Success) {
-        string code = match.Groups[1].Value;
-        string firstPart = match.Groups[2].Value;
-        string secondPart = match.Groups[3].Value;
-        string thirdPart = match.Groups[4].Value;
-        return $"+380 {code.Substring(1)} {firstPart} {secondPart} {thirdPart}";
-      }
-      return phoneNumber;
-     }
   }
 }

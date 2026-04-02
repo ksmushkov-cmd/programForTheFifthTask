@@ -12,13 +12,14 @@ namespace TextCorrector {
       Console.WriteLine("TEXT CORRECTOR v1.0");
 
       // Load error dictionary
+      DictionaryService dictionaryService = new DictionaryService();
       string dictionaryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "error_dictionary.json");
-      Dictionary<string, string> errorDictionary = DictionaryService.LoadDictionary(dictionaryPath);
+      Dictionary<string, string> errorDictionary = dictionaryService.LoadDictionary(dictionaryPath);
 
       if (errorDictionary == null || errorDictionary.Count == 0) {
         Console.WriteLine("Dictionary not loaded. Using built-in dictionary.");
-        errorDictionary = DictionaryService.GetDefaultDictionary();
-         DictionaryService.SaveDictionary(dictionaryPath, errorDictionary);
+        errorDictionary = dictionaryService.GetDefaultDictionary();
+        dictionaryService.SaveDictionary(dictionaryPath, errorDictionary);
       }
 
       Console.WriteLine($"Loaded corrections: {errorDictionary.Count}");
@@ -34,7 +35,8 @@ namespace TextCorrector {
       }
 
       // Get all text files
-      List<TextFile> textFiles = FileProcessor.GetTextFiles(directoryPath);
+      FileProcessor fileProcessor = new FileProcessor();
+      List<TextFile> textFiles = fileProcessor.GetTextFiles(directoryPath);
       Console.WriteLine($"Text files found: {textFiles.Count}");
 
       if (textFiles.Count == 0) {

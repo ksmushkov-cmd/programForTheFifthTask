@@ -5,10 +5,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace TextCorrector.Services {
-  /// Service for working with error dictionary
-  public static class DictionaryService {
-  /// Load dictionary from JSON file
-    public static Dictionary<string, string> LoadDictionary(string filePath) {
+
+  public class DictionaryService {
+
+    public Dictionary<string, string> LoadDictionary(string filePath) {
       try {
         if (File.Exists(filePath)) {
           string json = File.ReadAllText(filePath);
@@ -17,11 +17,12 @@ namespace TextCorrector.Services {
       } catch (Exception ex) {
         Console.WriteLine($"Error loading dictionary:{ex.Message}");
       }
+
       return null;
     }
 
-    /// Save dictionary to JSON file
-    public static void SaveDictionary(string filePath, Dictionary<string, string> dictionary) {
+    // Save dictionary to JSON file
+    public void SaveDictionary(string filePath, Dictionary<string, string> dictionary) {
       try {
         string directory = Path.GetDirectoryName(filePath);
         if (!Directory.Exists(directory)) {
@@ -35,7 +36,7 @@ namespace TextCorrector.Services {
       }
     }
 
-    public static Dictionary<string, string> GetDefaultDictionary() {
+    public Dictionary<string, string> GetDefaultDictionary() {
       return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
         { "привет", "привет" },
         { "првиет", "привет" },

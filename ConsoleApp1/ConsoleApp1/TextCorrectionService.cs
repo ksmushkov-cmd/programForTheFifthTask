@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace TextCorrector.Services {
-  /// Service for correcting text using error dictionary
+  
   public class TextCorrectionService {
     private Dictionary<string, string> _errorDictionary;
     private int _lastFixCount;
@@ -13,12 +13,10 @@ namespace TextCorrector.Services {
       _lastFixCount = 0;
     }
 
-    /// Get number of fixes from last operation
     public int GetLastFixCount() {
       return _lastFixCount;
     }
 
-    /// Correct text using error dictionary
     public string CorrectText(string input) {
       if (string.IsNullOrEmpty(input)) {
         _lastFixCount = 0;
